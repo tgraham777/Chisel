@@ -1,13 +1,13 @@
 class Chisel
 
-  def initialize
-@words1 =
-'# My Life in Desserts
-
-## Chapter 1: The Beginning
-
-"You just *have* to try the cheesecake," he said. "Ever since it appeared in **Food & Wine** this place has been packed every night."'
-  end
+#   def initialize
+# @words1 =
+# '# My Life in Desserts
+#
+# ## Chapter 1: The Beginning
+#
+# "You just *have* to try the cheesecake," he said. "Ever since it appeared in **Food & Wine** this place has been packed every night."'
+#   end
 
   def parse_header_one(words)
     #if words[0..1] == "# "
@@ -80,13 +80,42 @@ class Chisel
   end
 
   def split_lines(words1)
-    words1.split("\n\n").map do |line|
+    words1.split("\n\n").flat_map do |line|
       if line.include?("#")
-        line.parse_header(line)
+        line.split("\n\n")
       else
         line
       end
     end
+  end
+
+  def parse_emphasis(message)
+    in_a_tag = false
+    text1 = message.chars.map do |i|
+      if in_a_tag == false && i == "*"
+        in_a_tag = true
+        i.sub(i, "<em>")
+      elsif in_a_tag == true && i == "*"
+        in_a_tag = false
+        i.sub(i, "</em>")
+      else
+        i
+      end
+    end
+    text1.join
+  end
+
+  def parse_strong_emphasis(words)
+    words1 = words.split(" ")
+    words3 = words1.map do |i|
+      if i.include?("**")
+        words2 = i.delete!("**")
+        "<strong>#{words2}</strong>"
+      else
+        i
+      end
+    end
+  words3.join(" ")
   end
 
 # can use count on # to determine what level of header
@@ -126,6 +155,7 @@ class Chisel
   end
 
 end
+
 
 # use \n\n to separate lines in the output
 # just add <p> + to beginning of string and + </p> to the end
