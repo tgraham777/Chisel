@@ -40,6 +40,19 @@ class ChiselTest < Minitest::Test
     assert_equal "<p>\nThis is such an awesome paragraph.\n</p>", parser
   end
 
+  def test_split_lines
+    skip
+    chisel = Chisel.new
+    parser = chisel.split_lines("### a header\nand a paragraph")
+    assert_equal ["### a header", "and a paragraph"], parser
+  end
+
+  def test_parse_header
+    chisel = Chisel.new
+    parser = chisel.parse_header("### This is a header")
+    assert_equal "<h3>This is a header</h3>", parser
+  end
+
   def test_parse_all
     skip
   end
