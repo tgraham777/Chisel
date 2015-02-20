@@ -5,9 +5,8 @@ class Chisel
 
     ## Chapter 1: The Beginning
 
-    "You just *have* to try the cheesecake," he said. "Ever since it appeared in
-    **Food & Wine** this place has been packed every night."'
-  #end
+    "You just *have* to try the cheesecake," he said. "Ever since it appeared in **Food & Wine** this place has been packed every night."'
+  end
 
   def parse_header_one(words)
     #if words[0..1] == "# "
@@ -56,14 +55,18 @@ class Chisel
   end
 
   def parse_all(words1)
-    line_break = false
+    new_line = false
+    new_paragraph = true
+
     in_a_title = false
     in_a_paragraph = false
     in_a_tag = false
 
-     words1.chars.map do |i|
-       if line_break == false && i = "#"
-         
+     words1.split("\n\n").map do |i|
+       if new_line == false && in_a_tag == false && i = "#"
+         i.sub(i, "<h1>")
+          #after hit \n flip new_line to true
+          #after hit \n\n flip new_paragraph to true
 
 
        if in_a_tag == false && i == "*"
