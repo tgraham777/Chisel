@@ -61,11 +61,14 @@ class ChiselTest < Minitest::Test
   def test_emphasis_strong
     chisel = Chisel.new
     parser = chisel.parse_strong_emphasis("**hello** my **friend**")
-    assert_equal "<strong>hello</strong> my <strong>friend</strong>", parser # my <em>friend</em>", parser
+    assert_equal "<strong>hello</strong> my <strong>friend</strong>", parser
   end
 
   def test_parse_all
     skip
+    chisel = Chisel.new
+    parser = chisel.parse_all("# My Life in Desserts\n\n## Chapter 1: The Beginning\n\n\"You just *have* to try the cheesecake,\" he said. \"Ever since it appeared in **Food & Wine** this place has been packed every night.\"")
+    assert_equal "<h1>My Life in Desserts</h1>\n\n<h2>Chapter 1: The Beginning</h2>\n\n\"You just <em>have</em> to try the cheesecake,\" he said. \"Ever since it appeared in <strong>Food & Wine</strong> this place has been packed every night.\"", parser
   end
 
 end
