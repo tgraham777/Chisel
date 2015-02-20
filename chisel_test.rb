@@ -34,6 +34,12 @@ class ChiselTest < Minitest::Test
     assert_equal "<h5>This is Awesome</h5>", parser
   end
 
+  def test_parse_header
+    chisel = Chisel.new
+    parser = chisel.parse_header("### This is a header")
+    assert_equal "<h3>This is a header</h3>", parser
+  end
+
   def test_paragraph
     chisel = Chisel.new
     parser = chisel.parse_paragraph("This is such an awesome paragraph.")
@@ -41,16 +47,21 @@ class ChiselTest < Minitest::Test
   end
 
   def test_split_lines
-    skip
     chisel = Chisel.new
-    parser = chisel.split_lines("### a header\nand a paragraph")
+    parser = chisel.split_lines("### a header\n\nand a paragraph")
     assert_equal ["### a header", "and a paragraph"], parser
   end
 
-  def test_parse_header
+  def test_emphasis
     chisel = Chisel.new
-    parser = chisel.parse_header("### This is a header")
-    assert_equal "<h3>This is a header</h3>", parser
+    parser = chisel.parse_emphasis("*hello* *my* *friend*")
+    assert_equal "<em>hello</em> <em>my</em> <em>friend</em>", parser # my <em>friend</em>", parser
+  end
+
+  def test_emphasis_strong
+    chisel = Chisel.new
+    parser = chisel.parse_strong_emphasis("**hello** my **friend**")
+    assert_equal "<strong>hello</strong> my <strong>friend</strong>", parser # my <em>friend</em>", parser
   end
 
   def test_parse_all
@@ -75,12 +86,4 @@ end
 #   chisel = Chisel.new
 #   parser = chisel.parse_strong_emphasis("**hello** my **friend**")
 #   assert_equal "<strong>hello</strong> my <strong>friend</strong>", parser # my <em>friend</em>", parser
-# end
-#
-# def test_emphasis_strong
-#
-# end
-#
-# def test_emphasis_strong
-#
 # end
